@@ -1,0 +1,13 @@
+
+	/* 评论 */
+	.comment .child{padding: 30rpx 0;box-sizing: border-box;border-bottom: 1px solid #eee;}
+	.comment .child .photo{width: 60rpx; height: 60rpx;margin-right:10rpx;}
+	.comment .child .photo image{width: 100%;height: 100%; display: block;border-radius: 50%;}
+	.comment .child .imgbox{display: flex;flex-wrap: wrap;}
+	.comment .imgbox .lisThree{ width:216rpx;height: 216rpx; overflow: hidden; margin-right: 20rpx;}
+	.comment .imgbox .lisThree:nth-child(3n){margin-right: 0;}
+	.comment .imgbox .lisOne{width: 320rpx; height: 320rpx;}
+	.comment .imgbox .lisTwo{width:240rpx; height: 240rpx;margin-right: 30rpx;}
+	.comment .imgbox .lisTwo:nth-child(2n){margin-right: 0;}
+	.comment .imgbox .img{margin-top: 20rpx;}
+	.comment .imgbox image{width: 100%;height: 100%;display: block;border-radius: 10rpx;}

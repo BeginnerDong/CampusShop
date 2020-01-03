@@ -1,0 +1,4 @@
+
+	/* 小星星 */
+	.starBox{display: flex;align-items: center; }
+	.starBox image{width: 22rpx; height: 22rpx; margin-right:6rpx;}
