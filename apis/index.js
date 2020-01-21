@@ -30,6 +30,32 @@ export default {
 		};
 		http.HTTP(allParams);
 	},
+	
+	registerShop(param, callback) {
+	
+		var allParams = {
+			url: 'Project/Solely/registerShop',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	loginByShop(param, callback) {
+	
+		var allParams = {
+			url: 'Func/Common/loginByShop',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
 
 
 	bindShop(param, callback) {
@@ -127,6 +153,19 @@ export default {
 	SkuDateGet(param, callback) {
 		var allParams = {
 			url: 'Common/SkuDate/get',
+			type: 'post',
+			noToken: true,
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	messageGet(param, callback) {
+		var allParams = {
+			url: 'Common/Message/get',
 			type: 'post',
 			noToken: true,
 			data: param,

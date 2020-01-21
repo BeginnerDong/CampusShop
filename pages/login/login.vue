@@ -5,7 +5,7 @@
 			<view class="fs18 ftw pdt30 pdb10">登录</view>
 			<view class="items fs13 color6">
 				<view class="item flex borderB1">
-					<input type="number" maxlength="11" value="" placeholder="手机号">
+					<input type="number" maxlength="11" v-model="submitData.login_name" placeholder="手机号">
 				</view>
 				<view class="item flex borderB1 flexRowBetween">
 					<view style="width: 50%;">
@@ -19,7 +19,7 @@
 			</view>
 			
 			<view class="submitbtn" style="margin-top: 200rpx;">
-				<button class="Wbtn" type="button" @click="Router.navigateTo({route:{path:'/pages/index/index'}})">确定</button>
+				<button class="Wbtn" type="button" @click="submit">确定</button>
 			</view>
 		</view>
 		
@@ -33,24 +33,42 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				wx_info:{},
-				is_show:false
+				submitData:{
+					login_name:''
+				}
 			}
 		},
 		
 		onLoad() {
 			const self = this;
+			uni.hideLoading()
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
 		methods: {
-			getMainData() {
+			
+			submit() {
 				const self = this;
-				console.log('852369')
-				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				const postData = {
+					login_name: self.submitData.login_name,
+				};
+				if (self.$Utils.checkComplete(self.submitData)) {
+					const callback = (res) => {
+						if (res.solely_code == 100000) {
+							console.log(res);
+							uni.setStorageSync('user_token', res.token);
+							uni.setStorageSync('user_info', res.info);
+							setTimeout(function() {
+								self.Router.redirectTo({route:{path:'/pages/index/index'}})
+							}, 1000);
+						} else {
+							self.$Utils.showToast(res.msg,'none')
+						}
+					}
+					self.$apis.loginByShop(postData, callback);
+				} else {
+					self.$Utils.showToast('请补全登录信息', 'none')
+				};
+			},
 		}
 	};
 </script>

@@ -7,25 +7,25 @@
 				<view class="item flex borderB1">
 					<view class="icon"><image src="../../static/images/registered-icon.png" mode=""></image></view>
 					<view class="rr">
-						<input type="text" maxlength="11" value="" placeholder="店铺名称">
+						<input type="text" v-model="submitData.name" placeholder="店铺名称">
 					</view>
 				</view>
 				<view class="item flex borderB1">
 					<view class="icon"><image src="../../static/images/registered-icon1.png" mode=""></image></view>
 					<view class="rr">
-						<input type="text" value="" placeholder="地址">
+						<input type="text" v-model="submitData.address" placeholder="地址">
 					</view>
 				</view>
 				<view class="item flex borderB1">
 					<view class="icon"><image src="../../static/images/registered-icon2.png" mode=""></image></view>
 					<view class="rr">
-						<input type="text" value="" placeholder="联系人名称">
+						<input type="text" v-model="submitData.contacts" placeholder="联系人名称">
 					</view>
 				</view>
 				<view class="item flex borderB1">
 					<view class="icon"><image src="../../static/images/registered-icon3.png" mode=""></image></view>
 					<view class="rr">
-						<input type="number" maxlength="11" value="" placeholder="手机号码">
+						<input type="number" maxlength="11" v-model="submitData.phone" placeholder="手机号码">
 					</view>
 				</view>
 				<view class="item flex borderB1">
@@ -34,10 +34,10 @@
 						<view>营业执照</view>
 						<view class="upImg mgl10">
 							<view class="lis" @click="chooseImage">
-								<block v-if="imageSrc">
-									<image :src="imageSrc"></image>
+								<block v-if="submitData.licenseImg&&submitData.licenseImg.length>0">
+									<image :src="submitData.licenseImg&&submitData.licenseImg[0]?submitData.licenseImg[0].url:''"></image>
 								</block>
-								<block v-else>
+								<block @click="upLoadImg('licenseImg')" v-if="submitData.licenseImg&&submitData.licenseImg.length==0">
 									<view class="addBtn flexCenter">
 										<image class="jia" src="../../static/images/registered-icon5.png" mode=""></image>
 									</view>
@@ -48,7 +48,7 @@
 				</view>
 			</view>
 			<view class="submitbtn" style="margin-top: 200rpx;">
-				<button class="Wbtn" type="button" @click="Router.navigateTo({route:{path:'/pages/login/login'}})">提交</button>
+				<button class="Wbtn" type="button" @click="Utils.stopMultiClick(submit)">提交</button>
 			</view>
 		</view>
 		
@@ -62,63 +62,97 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				wx_info:{},
-				is_show:false,
-				imageSrc: ''
+				Utils:this.$Utils,
+				submitData:{
+					phone:'',
+					name:'',
+					address:'',
+					contacts:'',
+					licenseImg:[]
+				}
 			}
 		},
-		onUnload() {
-			const self = this;
-			self.imageSrc = '';
-		},
+		
 		onLoad() {
 			const self = this;
+			uni.setStorageSync('canClick',true)
+			// self.$Utils.loadAll(['getMainData'], self);
 		},
+		
 		methods: {
-			chooseImage(){
+			
+			
+			upLoadImg(type) {
+				const self = this;	
+				if (self.submitData[type].length > 8) {
+					api.showToast('仅限9张', 'fail');
+					return;
+				};
+				uni.showLoading({
+					mask: true,
+					title: '上传中',
+				});
+				const callback = (res) => {
+					console.log('res', res)
+					if (res.solely_code == 100000) {
+						self.submitData[type].push({url:res.info.url,type:'image'})
+						console.log('type',type)
+						console.log(self.submitData)
+						uni.hideLoading()
+					} else {
+						self.$Utils.showToast('网络故障', 'none')
+					}
+				};				
 				uni.chooseImage({
 					count: 1,
-					sizeType: ['compressed'],
-					sourceType: ['album'],
-					success: (res) => {
-						console.log('chooseImage success, temp path is', res.tempFilePaths[0])
-						var imageSrc = res.tempFilePaths[0]
-						uni.uploadFile({
-							url: 'https://unidemo.dcloud.net.cn/upload',
-							filePath: imageSrc,
-							fileType: 'image',
-							name: 'data',
-							success: (res) => {
-								console.log('uploadImage success, res is:', res)
-								uni.showToast({
-									title: '上传成功',
-									icon: 'success',
-									duration: 1000
-								})
-								this.imageSrc = imageSrc
-							},
-							fail: (err) => {
-								console.log('uploadImage fail', err);
-								uni.showModal({
-									content: err.errMsg,
-									showCancel: false
-								});
-							}
-						});
+					success: function(res) {
+						console.log(res);
+						var tempFilePaths = res.tempFilePaths;
+						console.log(callback)
+						for (var i = 0; i < tempFilePaths.length; i++) {
+							self.$Utils.uploadFile(tempFilePaths[i], 'file', {
+								tokenFuncName: 'getUserToken'
+							}, callback)
+						}
 					},
-					fail: (err) => {
-						console.log('chooseImage fail', err)
-					}
-				})
+					fail: function(err) {
+						uni.hideLoading();
+					},			
+				})			
 			},
-			getMainData() {
+			
+			submit() {
 				const self = this;
-				console.log('852369')
-				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				uni.setStorageSync('canClick',false)
+				const postData = {
+					data:self.$Utils.cloneForm(self.submitData)					
+				}
+				/* postData.smsAuth = {						
+					phone:self.submitData.phone,						
+					code:self.submitData.smsCode,
+				}; */
+				var newObject = self.$Utils.cloneForm(self.submitData);
+				delete newObject.licenseImg;
+				if (self.$Utils.checkComplete(newObject)) {						
+					const callback = (res) => {
+						uni.setStorageSync('canClick',true)
+						if (res.solely_code == 100000) {
+							self.$Utils.showToast(res.msg, 'none');	
+							/* uni.setStorageSync('user_token', res.token);
+							uni.setStorageSync('user_info', res.info); */
+							setTimeout(function() {
+								self.Router.redirectTo({route:{path:'/pages/login/login'}})
+							}, 1000);
+						} else {
+							self.$Utils.showToast(res.msg, 'none');
+						}
+					}
+					self.$apis.registerShop(postData, callback);
+				} else {
+					uni.setStorageSync('canClick',true);
+					self.$Utils.showToast('请补全所需信息', 'none');
+				};
+			},
 		}
 	};
 </script>

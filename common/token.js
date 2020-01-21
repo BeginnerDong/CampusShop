@@ -17,6 +17,18 @@ class Token {
             this.getUserInfo();
         };
     }
+	
+	getUserToken(callback,postData) {
+	    if((postData&&postData.refreshToken)||!uni.getStorageSync('user_token')){
+	        uni.removeStorageSync('user_token');
+	        uni.removeStorageSync('user_info');
+	        uni.redirectTo({
+	          url: '/pages/login/login'
+	        });
+	    }else{
+	        return uni.getStorageSync('user_token');
+	    }
+	}
 
 	getProjectToken(callback,postData) { 
 		
