@@ -66,13 +66,13 @@
         "permission" : {}
     },
     "h5" : {
-        "title" : "校园APP-商家端",
+        "title" : "商家端",
         "devServer" : {
             "https" : false
         },
         "router" : {
-            "base" : "/wx/"
+            "base" : "/campusShop/"
         },
-        "domain" : "https://www.local-scanner.com"
+        "domain" : "http://test.solelyfinance.com"
     }
 }

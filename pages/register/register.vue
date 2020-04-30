@@ -33,7 +33,7 @@
 					<view class="rr flex" style="align-items: flex-start;">
 						<view>营业执照</view>
 						<view class="upImg mgl10">
-							<view class="lis" @click="chooseImage">
+							<view class="lis" @click="upLoadImg('licenseImg')">
 								<block v-if="submitData.licenseImg&&submitData.licenseImg.length>0">
 									<image :src="submitData.licenseImg&&submitData.licenseImg[0]?submitData.licenseImg[0].url:''"></image>
 								</block>
@@ -76,10 +76,39 @@
 		onLoad() {
 			const self = this;
 			uni.setStorageSync('canClick',true)
-			// self.$Utils.loadAll(['getMainData'], self);
+			self.$Utils.loadAll(['wxJsSdk'], self);
 		},
 		
 		methods: {
+			
+			
+			wxJsSdk() {
+				const self = this;
+				const postData = {
+					thirdapp_id: 2,
+					url: location.href.split('#')[0]
+				};
+				const callback = (res) => {
+					self.$jweixin.config({
+						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId: res.appId, // 必填，公众号的唯一标识
+						timestamp: res.timestamp, // 必填，生成签名的时间戳
+						nonceStr: res.nonceStr, // 必填，生成签名的随机串
+						signature: res.signature, // 必填，签名
+						jsApiList: ['chooseImage',  
+									'previewImage',  
+									'uploadImage',  
+									'downloadImage',] // 必填，需要使用的JS接口列表
+					});
+					self.$jweixin.ready(function() { //需在用户可能点击分享按钮前就先调用
+					});
+					self.$jweixin.error(function(res) {
+						console.log('error', res)
+					});
+					self.$Utils.finishFunc('wxJsSdk');
+				};
+				self.$apis.WxJssdk(postData, callback);
+			},
 			
 			
 			upLoadImg(type) {
@@ -103,7 +132,7 @@
 						self.$Utils.showToast('网络故障', 'none')
 					}
 				};				
-				uni.chooseImage({
+				wx.chooseImage({
 					count: 1,
 					success: function(res) {
 						console.log(res);
@@ -111,7 +140,7 @@
 						console.log(callback)
 						for (var i = 0; i < tempFilePaths.length; i++) {
 							self.$Utils.uploadFile(tempFilePaths[i], 'file', {
-								tokenFuncName: 'getUserToken'
+								thirdapp_id:2
 							}, callback)
 						}
 					},

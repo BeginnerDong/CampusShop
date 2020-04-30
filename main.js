@@ -11,7 +11,7 @@ import $RoutesConfig from './config/routes.config.js'
 import $ConstDataConfig from './config/constData.config.js'
 import $modalHelper from './common/modalHelper.js'
 
-//var jweixin = require('jweixin-module')
+var jweixin = require('jweixin-module')
 
 
 Vue.prototype.$store = store
@@ -21,7 +21,7 @@ Vue.prototype.$AssetsConfig = $AssetsConfig
 Vue.prototype.$Config = $Config
 Vue.prototype.$Router = $Router
 Vue.prototype.$Token = $Token
-//Vue.prototype.$jweixin = jweixin
+Vue.prototype.$jweixin = jweixin
 Vue.config.productionTip = false
 
 $Router.beforeEach((navType, to) => {

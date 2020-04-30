@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view v-if="showAll">
 		
 		<view class="loginBox">
 			<view class="fs18 ftw pdt30 pdb10">登录</view>
@@ -41,14 +41,24 @@
 				currentTime:61,
 				text:'获取验证码',
 				hasSend:false,
+				showAll:false
 			}
 		},
 		
 		onLoad() {
 			const self = this;
 			uni.hideLoading()
+			if (uni.getStorageSync('user_token')) {
+				uni.redirectTo({
+					url: '/pages/index/index'
+				})
+			}else{
+				self.showAll = true
+			}
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
+		
+		
 		methods: {
 			
 			sendCode(){

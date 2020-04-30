@@ -31,6 +31,19 @@ export default {
 		http.HTTP(allParams);
 	},
 	
+	upload(param, callback) {
+	
+		var allParams = {
+			url: 'Project/Solely/upload',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
 	registerShop(param, callback) {
 	
 		var allParams = {

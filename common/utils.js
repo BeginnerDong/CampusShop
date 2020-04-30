@@ -1,5 +1,5 @@
 import assetsConfig from "@/config/assets.config.js";
-
+import token from '@/common/token.js';
 export default {
 	
 	
@@ -45,11 +45,9 @@ export default {
 	uploadFile(filePath, name, formData, callback) {
 	
 		var that = this;
-		const c_callback = (res) => {
-			that.uploadFile(filePath, name, formData, callback);
-		};
-		console.log('uploadFile', formData)
-		if (formData.tokenFuncName) {
+		
+		console.log('uploadFile1111111111111', formData)
+		/* if (formData.tokenFuncName) {
 			if (formData.refreshTokn) {
 				token[formData.tokenFuncName](c_callback, {
 					refreshToken: true
@@ -60,9 +58,9 @@ export default {
 			if (!formData.token) {
 				return;
 			};
-		};
+		}; */
 		uni.uploadFile({
-			url: 'http:/106.12.155.217/campus/public/index.php/api/v1/Base/FtpFile/upload',
+			url: '/campus/public/index.php/api/v1/Project/Solely/upload',
 			filePath: filePath,
 			name: name,
 			formData: formData,
