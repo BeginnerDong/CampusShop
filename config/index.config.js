@@ -3,9 +3,9 @@ const CONFIG = {
         //开发环境配置http://106.12.155.217/project/
         development: {
                 loginTitleTxt: "", // 登录页标题
-                copyrightTxt: "", // 版本信息
-                assetsPath: "http://test.solelyfinance.com/campusShop", // 静态资源路径
-                baseUrl: "http://test.solelyfinance.com/campus/public/index.php/api/v1/",
+                copyrightTxt: "", // 版本信息https://www.niptik.com/api/public/index.php/api/v1/
+                assetsPath: "https://www.niptik.com", // 静态资源路径
+                baseUrl: "https://www.niptik.com/api/public/index.php/api/v1/",
                 tokenKey: "WECHAT_TRADE", // 登录标识
                 testOpenId: "oEjRxwy7jL9PgG0kWeb4VcDTZEas", // 小程序测试openId
                 forcedLogin: false, // touristMode游客模式下APP是否强制用户登录 场景：当用户进入登录页面后无法后退。
@@ -16,8 +16,8 @@ const CONFIG = {
         production: {
                 loginTitleTxt: "", // 登录页标题
                 copyrightTxt: "", // 版本信息
-                assetsPath: "http://test.solelyfinance.com/campusShop", // 静态资源路径
-                baseUrl: "http://test.solelyfinance.com/campus/public/index.php/api/v1/",
+                assetsPath: "https://www.niptik.com/campusShop", // 静态资源路径
+                baseUrl: "https://www.niptik.com/api/public/index.php/api/v1/",
                 tokenKey: "WECHAT_TRADE", // 登录标识
                 testOpenId: "oEjRxwy7jL9PgG0kWeb4VcDTZEas", // 小程序测试openId
                 forcedLogin: false, // touristMode游客模式下APP是否强制用户登录 场景：当用户进入登录页面后无法后退。

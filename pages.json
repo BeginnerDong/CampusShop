@@ -41,6 +41,13 @@
 				"navigationBarTitleText": "评论列表",//设置页面标题文字
 				"onReachBottomDistance":100
 			}
+		},
+		{
+			"path": "pages/password/password",
+			"style": {
+				"navigationBarTitleText": "修改密码",//设置页面标题文字
+				"onReachBottomDistance":100
+			}
 		}
     ],
 	"globalStyle": {

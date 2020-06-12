@@ -29,6 +29,12 @@
 					</view>
 				</view>
 				<view class="item flex borderB1">
+					<view class="icon"><image src="../../static/images/registered-icon3.png" mode=""></image></view>
+					<view class="rr">
+						<input type="text"  v-model="submitData.password" placeholder="密码">
+					</view>
+				</view>
+				<view class="item flex borderB1">
 					<view class="icon"><image src="../../static/images/registered-icon4.png" mode=""></image></view>
 					<view class="rr flex" style="align-items: flex-start;">
 						<view>营业执照</view>
@@ -68,7 +74,8 @@
 					name:'',
 					address:'',
 					contacts:'',
-					licenseImg:[]
+					licenseImg:[],
+					password:''
 				}
 			}
 		},

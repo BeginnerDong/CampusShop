@@ -73,6 +73,6 @@
         "router" : {
             "base" : "/campusShop/"
         },
-        "domain" : "http://test.solelyfinance.com"
+        "domain" : "https://www.niptik.com"
     }
 }

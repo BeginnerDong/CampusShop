@@ -1,28 +1,26 @@
 <template>
-	<view v-if="showAll">
+	<view>
 		
 		<view class="loginBox">
-			<view class="fs18 ftw pdt30 pdb10">登录</view>
+			<view class="fs18 ftw pdt30 pdb10">修改密码</view>
 			<view class="items fs13 color6">
 				<view class="item flex borderB1">
-					<input type="number" maxlength="11" v-model="submitData.login_name" placeholder="手机号">
+					<input type="number" maxlength="11" v-model="submitData.phone" placeholder="手机号">
 				</view>
 				<view class="item flex borderB1">
-					<input type="password" v-model="submitData.password" placeholder="密码">
+					<input type="password" v-model="submitData.password" placeholder="新密码">
 				</view>
-				<!-- <view class="item flex borderB1 flexRowBetween">
+				
+				<view class="item flex borderB1 flexRowBetween">
 					<view style="width: 50%;">
 						<input type="text"  v-model="submitData.code" placeholder="验证码">
 					</view>
 					<view class="fs14 ftw color2" @click="sendCode()" v-if="!hasSend">{{text}}</view>
 					<view class="fs14 ftw color2"  v-else>{{text}}</view>
-				</view> -->
+				</view>
 			</view>
-			<view class="pdt10 flexRowBetween">
-				<view class="fs13 color2" @click="Router.navigateTo({route:{path:'/pages/register/register'}})">没有账号，去注册</view>
-				
-				<view class="fs13 color2" @click="Router.navigateTo({route:{path:'/pages/password/password'}})">重置密码</view>
-			</view>
+			
+			
 			<view class="submitbtn" style="margin-top: 200rpx;">
 				<button class="Wbtn" type="button" @click="submit">确定</button>
 			</view>
@@ -39,7 +37,8 @@
 			return {
 				Router:this.$Router,
 				submitData:{
-					login_name:'',
+					phone:'',
+					code:'',
 					password:''
 				},
 				currentTime:61,
@@ -52,13 +51,7 @@
 		onLoad() {
 			const self = this;
 			uni.hideLoading()
-			if (uni.getStorageSync('user_token')) {
-				uni.redirectTo({
-					url: '/pages/index/index'
-				})
-			}else{
-				self.showAll = true
-			}
+			
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
 		
@@ -116,13 +109,13 @@
 			submit() {
 				const self = this;
 				const postData = {
-					login_name: self.submitData.login_name,
+					phone: self.submitData.phone,
 					password:self.submitData.password
 				};
-				/* postData.smsAuth = {
+				postData.smsAuth = {
 					phone:self.submitData.login_name,						
 					code:self.submitData.code,
-				}; */
+				};
 				if (self.$Utils.checkComplete(self.submitData)) {
 					const callback = (res) => {
 						if (res.solely_code == 100000) {
@@ -136,9 +129,9 @@
 							self.$Utils.showToast(res.msg,'none')
 						}
 					}
-					self.$apis.loginByShop(postData, callback);
+					self.$apis.resetPassword(postData, callback);
 				} else {
-					self.$Utils.showToast('请补全登录信息', 'none')
+					self.$Utils.showToast('请补全信息', 'none')
 				};
 			},
 		}
