@@ -60,7 +60,7 @@ export default {
 			};
 		}; */
 		uni.uploadFile({
-			url: '/campus/public/index.php/api/v1/Project/Solely/upload',
+			url: 'https://www.niptik.com/api/public/index.php/api/v1/Project/Solely/upload',
 			filePath: filePath,
 			name: name,
 			formData: formData,
